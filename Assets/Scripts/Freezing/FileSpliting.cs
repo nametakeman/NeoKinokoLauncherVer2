@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// フォルダをZIP圧縮して、チャンクで分割していくクラス
 /// </summary>
-public class FileSpliting : MonoBehaviour
+public class FileSpliting
 {
     /// <summary>
     /// フォルダを圧縮するメソッド
@@ -16,7 +16,7 @@ public class FileSpliting : MonoBehaviour
     /// <param name="toFilePath">zip化したファイルのパス</param>
     public string PackagingFile(string folderURL,string toFilePath)
     {
-        string zipFileName = Path.GetDirectoryName(folderURL) + ".zip";
+        string zipFileName = Path.GetFileName(folderURL) + ".zip";
         string tempFilePath = Path.Combine(toFilePath, zipFileName);
 
         try
@@ -41,13 +41,17 @@ public class FileSpliting : MonoBehaviour
     /// <param name="splicedBite">分割する要領の指定(単位はバイト)</param>
     public void DivideZipFile(int splicedBite ,string zipFilePath, string saveinPath)
     {
-        //チャンクインデックス00(.00)にDL情報のファイル（容量、ゲーム名等）を置いておく
+        //ファイルサイズ
+        FileInfo fileInfo = new FileInfo(zipFilePath);
+        long fileSize = fileInfo.Length;
+        //ファイル名
+        string fileName = Path.GetFileName(zipFilePath).Split(".")[0];
 
-
+            
+        long chunkIndex = 1;
         //ファイルストリームを開く
         using (FileStream fs = new FileStream(zipFilePath, FileMode.Open, FileAccess.Read))
         {
-            int chunkIndex = 1;
             int bytesRead;
 
             byte[] buffer = new byte[splicedBite];
@@ -56,8 +60,8 @@ public class FileSpliting : MonoBehaviour
             //https://learn.microsoft.com/ja-jp/dotnet/api/system.io.filestream.read?view=net-8.0#system-io-filestream-read(system-byte()-system-int32-system-int32)
             while ((bytesRead = fs.Read(buffer, 0,buffer.Length)) > 0)
             {
-                //保存先のパス
-                string chunkFileName = string.Format("data.{0:D3}", chunkIndex);
+                //保存先のパス string.Format()の使い方に注意
+                string chunkFileName = string.Format("{0}.{1:D3}", fileName, chunkIndex);
                 string chunkPath = Path.Combine(saveinPath, chunkFileName);
 
                 //分割ファイルを書き出し
@@ -69,5 +73,17 @@ public class FileSpliting : MonoBehaviour
                 chunkIndex++;
             }
         }
+
+        //チャンクインデックス00(.00)にDL情報のファイル（容量、ZIPファイル名等）を置いておく
+        DLData createdDLData = new DLData(fileSize, fileName, chunkIndex);
+        string dlDataFileName = $"{fileName}.00";
+        string dlDataPath = Path.Combine(saveinPath, dlDataFileName);
+        using (FileStream dlDataFs = new FileStream(dlDataPath, FileMode.Create, FileAccess.Write))
+        {
+            dlDataFs.Write(createdDLData.ReturnByteData());
+        }
+
+        //zipファイルを削除する
+        File.Delete(dlDataPath);
     }
 }
