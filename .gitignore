@@ -2,6 +2,7 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
+#外部アセットが入るディレクトリ(AssetStoreTools)と機密性の高いデータが入っているディレクトリ(DelicateDatas)を追記
 .utmp/
 /[Ll]ibrary/
 /[Tt]emp/
@@ -11,6 +12,7 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 /[Aa]ssets/AssetStoreTools/
+/[Aa]ssets/DelicateDatas/
 /[Pp]ackages/com.singularitygroup.hotreload/
 *.log
 
