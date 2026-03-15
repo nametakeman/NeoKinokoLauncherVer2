@@ -24,7 +24,7 @@ public class FileCombine
         //対象ディレクトリ内のファイルのパスを取得してくる
         string[] splitedFiles = Directory.GetFiles(splitedFilesPath);
 
-        MistakeFiles mistakeFiles = new FreezingGeneric().hasAllRequiredData(splitedFilesPath);
+        MistakeFiles mistakeFiles = new FreezingTools().hasAllRequiredData(splitedFilesPath);
         if(mistakeFiles.LackFiles.Count() != 0)
         {
             //ファイル欠損時に呼ぶメソッドを呼んで処理を終了
@@ -41,7 +41,7 @@ public class FileCombine
         }
 
         //データ群を拡張子でソート
-        string[] sortedFiles = new FreezingGeneric().sortingFilesByPath(splitedFilesPath);
+        string[] sortedFiles = new FreezingTools().sortingFilesByPath(splitedFilesPath);
         //一番初めに来るファイル(.00)のファイルをバイト配列として取得する
         byte[] dlDatabytes = File.ReadAllBytes(sortedFiles[0]);
         //DLDataクラスに上記バイト配列からデータを格納

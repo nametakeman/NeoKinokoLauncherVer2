@@ -89,7 +89,7 @@ public class FileSpliting
         }
 
         //全てのデータが揃っているか確認しておく
-        MistakeFiles mistakeFiles = new FreezingGeneric().hasAllRequiredData(saveinPath);
+        MistakeFiles mistakeFiles = new FreezingTools().hasAllRequiredData(saveinPath);
         if(mistakeFiles.LackFiles.Count != 0)
         {
             Debug.Log("ファイルの分割に失敗しました");

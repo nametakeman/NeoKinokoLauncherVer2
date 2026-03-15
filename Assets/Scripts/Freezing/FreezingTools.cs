@@ -9,7 +9,7 @@ using UnityEngine;
 /// <summary>
 /// 解凍・圧縮作業の中で共通して使われる処理をまとめたもの
 /// </summary>
-public class FreezingGeneric
+public class FreezingTools
 {
     /// <summary>
     /// 指定されたフォルダに必要な全てのファイル群が揃っているかを確認するメソッド

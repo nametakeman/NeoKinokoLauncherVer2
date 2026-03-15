@@ -48,7 +48,7 @@ public class DLData
     public void SetDataByPath(string filesPath)
     {
         //ファイル群のパスを順番にソートする
-        string[] sortedFiles = new FreezingGeneric().sortingFilesByPath(filesPath);
+        string[] sortedFiles = new FreezingTools().sortingFilesByPath(filesPath);
     }
 
     /// <summary>
